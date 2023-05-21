@@ -1,0 +1,4 @@
+com\mycompany\youchat\Client.class
+com\mycompany\youchat\Server.class
+com\mycompany\youchat\MessageReader.class
+com\mycompany\youchat\ClientHandler.class
