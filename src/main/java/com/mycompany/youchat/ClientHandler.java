@@ -43,12 +43,13 @@ public class ClientHandler implements Runnable {
             // Header - YouChat
             writer.println("[----------- YouChat <Y> Instant Messenger -----------]");
             writer.println("Choose your username to start using YouChat:");
-            username = reader.readLine().toUpperCase().trim();
+            username = reader.readLine();
             //In case the user types /exit before choosing a username
             if (username == null) {
                 // Server message
                 System.out.println("Client disconnected without creating a username");
             } else {
+                username.toUpperCase().trim();
                 // Checks to see if the username already exists (ignores case)
                 while (connectedClients.containsKey(username)) {
                     writer.println("\nUh, I'm sorry. This username is already being used.\n"
