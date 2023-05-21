@@ -39,8 +39,10 @@ public class MessageReader implements Runnable {
                 System.out.println(serverMessage);
             }
         } catch (IOException e) {
+            // Displays a goodbye and a random farewell message
             System.out.println("Sorry you have to leave!");
             System.out.println(goodbye.getMessage());
+            System.out.println("Thank you for using YouChat!\n[----------- YouChat <Y> Instant Messenger -----------]\n");
         }
     }
 }
