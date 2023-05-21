@@ -33,7 +33,7 @@ public class ClientHandler implements Runnable {
 			username = reader.readLine();
 			connectedClients.put(username, writer);
 			writer.println("Welcome " + username);
-			System.out.println("User" + username + "connected...");
+			System.out.println("User '" + username + "' has connected...");
 
 			String clientMessage;
 			while ((clientMessage = reader.readLine()) != null) {
@@ -45,7 +45,11 @@ public class ClientHandler implements Runnable {
 					if (parts.length == 3) {
 						String receiver = parts[1];
 						String message = parts[2];
-						server.sendMessage(username, receiver, message);
+						if(!connectedClients.containsKey(receiver)) {
+							writer.println("Invalid user. It does not exist or is offline.");							
+						} else {
+							server.sendMessage(username, receiver, message);
+						}
 					} else {
 						writer.println("Invalid message format. Usage: /msg <receiver> <message>");
 					}
@@ -65,7 +69,6 @@ public class ClientHandler implements Runnable {
 						writer.println("Invalid command format. Usage: /history <username>");
 					}
 				}
-
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
