@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  *
- * @author 2020338 - Douglas Santos
+ @author 2020338 - Douglas Santos
  */
 public class Server {
 
