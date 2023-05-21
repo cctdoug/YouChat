@@ -16,9 +16,8 @@ import java.util.Map;
 
 /**
  *
- * @author  2020338 - Douglas Santos
+ * @author 2020338 - Douglas Santos
  */
-
 public class ClientHandler implements Runnable {
 
     // Map to store the connected clients
@@ -41,18 +40,29 @@ public class ClientHandler implements Runnable {
             // Create PrintWriter to send messages to the client
             writer = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            writer.println("Please, enter your username:");
+            writer.println("[-----------YouChat-----------]");
+            writer.println("Choose your username to start using YouChat:");
             username = reader.readLine();
-            // Add the client's PrintWriter to the connectedClients map with the username as
-            // the key
-            connectedClients.put(username, writer);
+            if (username == null) {
+                System.out.println("Client disconnected without creating username");
+            } else {
+                // Add the client's PrintWriter to the connectedClients map with the username as
+                // the key
+                connectedClients.put(username, writer);
 
-            writer.println("Welcome " + username);
-            System.out.println("User '" + username + "' has connected...");
+                writer.println("Welcome to YouChat, " + username + "!!!");
+                writer.println("These are the commands you can use in this prototype:\n"
+                        + " /msg <receiver> <message> - to send a message, \n"
+                        + " /users - to check who is online,\n"
+                        + " /history <user> - to check the history of conversations with the desired <user>)\n"
+                        + " /exit - to leave YouChat (Remember to say bye to your friends!). \n\n"
+                        + ">>> - - Start here! Enjoy it! - - >>>");
 
+                System.out.println("User '" + username + "' has connected...");
+            }
             String clientMessage;
             /**
-             * /<command> (/exit, /msg, /users, history) User commands that
+             * /<command> (/exit, /msg, /users, /history) User commands that
              * controls the chat functionalities
              *
              */
@@ -88,7 +98,11 @@ public class ClientHandler implements Runnable {
                     // This command displays a list of connected users
                 } else if (clientMessage.equals("/users")) {
                     List<String> users = new ArrayList<>(connectedClients.keySet());
-                    writer.println("Connected users: " + users.toString());
+                    writer.println("People online now: " + users.toString());
+                    if (!users.isEmpty()) {
+                        writer.println("Remember how To talk to them\n "
+                                + "Ex: /msg " + users.get(0) + " Hello, there!");
+                    }
                     // This command brings the message history between two users
                 } else if (clientMessage.startsWith("/history")) {
                     String[] parts = clientMessage.split(" ", 2);
@@ -97,8 +111,7 @@ public class ClientHandler implements Runnable {
                         // it uses the same splitting technique to get the target user's username and
                         // pass it to the method
                         List<String> history = server.getConversationHistory(username, targetUser);
-                        writer.println("Conversation history with " + targetUser + ":");
-
+                        writer.println("This is what you and '" + targetUser + "' talked about so far:");
                         for (String message : history) {
                             writer.println(message);
                         }
@@ -115,7 +128,7 @@ public class ClientHandler implements Runnable {
                 // Remove the client's username from the connectedClients map
                 connectedClients.remove(username);
                 // Print the user's disconnection to the server console
-                System.out.println(username + " has disconnected");
+                System.out.println("'" + username + "' has disconnected");
             }
             try {
                 // Close the client socket

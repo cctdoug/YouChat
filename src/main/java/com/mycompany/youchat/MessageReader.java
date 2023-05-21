@@ -11,10 +11,10 @@ import java.io.IOException;
  *
  * @author 2020338 - Douglas Santos
  */
-
 public class MessageReader implements Runnable {
 
     private BufferedReader reader;
+    GoodbyeMessages goodbye = new GoodbyeMessages();
 
     /**
      * Builds a MessageReader object with the specified BufferedReader.
@@ -39,7 +39,8 @@ public class MessageReader implements Runnable {
                 System.out.println(serverMessage);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Sorry you have to leave!");
+            System.out.println(goodbye.getMessage());
         }
     }
 }
